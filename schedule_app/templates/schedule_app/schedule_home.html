@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="section-title">Schedule</div>
+
+<div class="container pb-5">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="schedule-sidebar">
+                <a href="/schedule/new/" class="schedule-side-btn">Schedule Meeting</a>
+                <a href="/schedule/" class="schedule-side-btn active">Upcoming</a>
+                <a href="/teams/" class="schedule-side-btn">Teams</a>
+            </div>
+        </div>
+
+        <div class="col-md-8 offset-md-1">
+            <div class="schedule-panel">
+                <h3 class="text-center mb-4">Upcoming Meetings</h3>
+
+                {% for meeting in meetings %}
+                    <div class="schedule-card">
+
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="mb-0">{{ meeting.title }}</h5>
+
+                            {% if meeting.status == 'pending' %}
+                                <span class="schedule-badge schedule-badge-pending">Pending</span>
+                            {% elif meeting.status == 'accepted' %}
+                                <span class="schedule-badge schedule-badge-accepted">Accepted</span>
+                            {% elif meeting.status == 'declined' %}
+                                <span class="schedule-badge schedule-badge-declined">Declined</span>
+                            {% endif %}
+                        </div>
+
+                        {% if meeting.organiser == request.user %}
+                            <p class="schedule-status pending">
+                                You organised this meeting. 
+                                {% if meeting.status == 'pending' %}
+                                    Waiting for response from requested user.
+                                {% elif meeting.status == 'accepted' %}
+                                    The meeting request has been accepted.
+                                {% elif meeting.status == 'declined' %}
+                                    The meeting request was declined.
+                                {% endif %}
+                            </p>
+                        {% elif meeting.recipient == request.user %}
+                            {% if meeting.status == 'pending' %}
+                                <p class="schedule-status pending">
+                                    You have received a meeting request.
+                                </p>
+                            {% elif meeting.status == 'accepted' %}
+                                <p class="schedule-status accepted">
+                                    You accepted this meeting.
+                                </p>
+                            {% endif %}
+                        {% endif %}
+
+                        <div class="schedule-info-grid">
+                            <div>
+                                <strong>Team</strong>
+                                <span>{{ meeting.team.name }}</span>
+                            </div>
+
+                            <div>
+                                <strong>Date</strong>
+                                <span>{{ meeting.date }}</span>
+                            </div>
+
+                            <div>
+                                <strong>Time</strong>
+                                <span>{{ meeting.time }}</span>
+                            </div>
+
+                            <div>
+                                <strong>Location / Platform</strong>
+                                <span>{{ meeting.location|default:"Not added" }}</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <p class="mb-1">
+                                <strong>Organiser:</strong>
+                                {% if meeting.organiser.first_name or meeting.organiser.last_name %}
+                                    {{ meeting.organiser.first_name }} {{ meeting.organiser.last_name }}
+                                {% else %}
+                                    {{ meeting.organiser.username }}
+                                {% endif %}
+                            </p>
+
+                            <p class="mb-1">
+                                <strong>Requested User:</strong>
+                                {% if meeting.recipient.first_name or meeting.recipient.last_name %}
+                                    {{ meeting.recipient.first_name }} {{ meeting.recipient.last_name }}
+                                {% else %}
+                                    {{ meeting.recipient.username }}
+                                {% endif %}
+                            </p>
+
+                            {% if meeting.notes %}
+                                <p class="mb-1"><strong>Notes:</strong> {{ meeting.notes }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="mt-3 d-flex gap-2 flex-wrap">
+                            {% if meeting.recipient == request.user and meeting.status == 'pending' %}
+                                <form method="POST" action="/schedule/{{ meeting.id }}/accept/">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                </form>
+
+                                <form method="POST" action="/schedule/{{ meeting.id }}/decline/">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                </form>
+                            {% endif %}
+
+                            {% if meeting.organiser == request.user or meeting.recipient == request.user and meeting.status == 'accepted' %}
+                                <a href="/schedule/{{ meeting.id }}/delete/" class="btn btn-outline-danger btn-sm">
+                                    Delete Meeting
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-center">No meetings scheduled yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

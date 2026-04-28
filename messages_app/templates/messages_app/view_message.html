@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="section-title">Message Details</div>
+
+<div class="container pb-5">
+    <div class="card p-4 shadow-sm" style="border-radius: 10px;">
+        <h2>{{ message.subject }}</h2>
+
+        <p>
+            <strong>From:</strong>
+            {% if message.sender.first_name or message.sender.last_name %}
+                {{ message.sender.first_name }} {{ message.sender.last_name }}
+            {% else %}
+                {{ message.sender.username }}
+            {% endif %}
+        </p>
+
+        <p>
+            <strong>To:</strong>
+            {% if message.recipient.first_name or message.recipient.last_name %}
+                {{ message.recipient.first_name }} {{ message.recipient.last_name }}
+            {% else %}
+                {{ message.recipient.username }}
+            {% endif %}
+        </p>
+
+        <p><strong>Date:</strong> {{ message.created_at }}</p>
+
+        <hr>
+
+        <p>{{ message.body|linebreaksbr }}</p>
+
+        <a href="/messages/" class="btn btn-secondary mt-3">Back to Inbox</a>
+    </div>
+</div>
+
+{% endblock %}

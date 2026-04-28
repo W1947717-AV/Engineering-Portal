@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="section-title">Teams Directory</div>
+
+<div class="container pb-4">
+
+    <form method="GET" action="/teams/">
+        <div class="row justify-content-center mb-4 g-4">
+
+            <div class="col-md-2">
+                <select class="form-select" name="department">
+                    <option value="">Departments</option>
+                    {% for department in departments %}
+                        <option value="{{ department.id }}"
+                            {% if selected_department == department.id|stringformat:"s" %}selected{% endif %}>
+                            {{ department.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <select class="form-select" name="team_leader">
+                    <option value="">Team Leader</option>
+                    {% for leader in team_leaders %}
+                        <option value="{{ leader.id }}"
+                            {% if selected_team_leader == leader.id|stringformat:"s" %}selected{% endif %}>
+                            {% if leader.first_name or leader.last_name %}
+                                {{ leader.first_name }} {{ leader.last_name }}
+                            {% else %}
+                                {{ leader.username }}
+                            {% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <select class="form-select" name="workstream">
+                    <option value="">Workstream</option>
+                    {% for workstream in workstreams %}
+                        <option value="{{ workstream }}"
+                            {% if selected_workstream == workstream %}selected{% endif %}>
+                            {{ workstream }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <select class="form-select" name="sort">
+                    <option value="">Sort</option>
+                    <option value="az" {% if selected_sort == 'az' %}selected{% endif %}>A–Z</option>
+                    <option value="za" {% if selected_sort == 'za' %}selected{% endif %}>Z–A</option>
+                </select>
+            </div>
+
+            {% if query %}
+                <input type="hidden" name="q" value="{{ query }}">
+            {% endif %}
+
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-dark w-50">Filter</button>
+                <a href="/teams/" class="btn btn-outline-secondary w-50">Reset</a>
+            </div>
+        </div>
+    </form>
+
+    {% if query or selected_department or selected_team_leader or selected_workstream or selected_sort %}
+        <div class="alert alert-light border mb-4">
+            Showing filtered results.
+        </div>
+    {% endif %}
+
+    {% for team in teams %}
+        <div class="card mb-4 shadow-sm" style="border-radius: 12px; padding: 18px;">
+            <div class="row align-items-center">
+
+                <div class="col-md-2 text-center">
+                    <img  
+                        src="{% static 'teams/team_logos/' %}{{ team.logo }}.png"  
+                        alt="{{ team.name }} logo"  
+                        style="width:120px; height:120px; object-fit:contain; background:#f1f1f1; border-radius:10px; padding:12px;"
+                    >
+                </div>
+
+                <div class="col-md-7">
+                    <h2>{{ team.name }}</h2>
+
+                    <p><strong>Department:</strong> {{ team.department|default:"Not added yet" }}</p>
+                    <p>
+                        <strong>Description:</strong>
+                        {{ team.description|default:"No description added yet." }}
+                    </p>    
+                    <p><strong>Team Leader:</strong> {{ team.get_team_leader_name }}</p>
+
+                    <p>
+                        <strong>Workstream:</strong>
+                        {% if team.workstream %}
+                            <span class="badge bg-dark">
+                                {{ team.workstream }}
+                            </span>
+                        {% else %}
+                            Not added yet
+                        {% endif %}
+                    </p>
+
+                    <p><strong>Skills:</strong> {{ team.skills|default:"Not added yet" }}</p>
+
+                    <p>
+                        <strong>Dependencies:</strong><br>
+                        {% for dep in team.downstream_dependencies.all %}
+                            <a href="/teams/{{ dep.id }}/" class="dependency-pill">
+                                {{ dep.name }}
+                            </a>
+                        {% empty %}
+                            <span class="text-muted">None</span>
+                        {% endfor %}
+                    </p>
+                </div>
+
+                <div class="col-md-3 text-center">
+                    <a href="/teams/{{ team.id }}/" class="btn btn-outline-secondary mb-2 w-100">View Detail</a>
+                    <a href="/messages/" class="btn btn-outline-secondary mb-2 w-100">Email Team</a>
+                    <a href="/schedule/new/?team={{ team.id }}" class="btn btn-outline-secondary w-100">Schedule Meeting</a>
+                </div>
+
+            </div>
+        </div>
+    {% empty %}
+        <div class="text-center py-5">
+            <p>No teams found.</p>
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

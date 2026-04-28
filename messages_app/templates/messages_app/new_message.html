@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="section-title">Messages</div>
+
+<div class="container pb-5">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="message-sidebar">
+                <a href="/messages/new/" class="message-side-btn active">New Message</a>
+                <a href="/messages/inbox/" class="message-side-btn">Inbox</a>
+                <a href="/messages/sent/" class="message-side-btn">Sent</a>
+                <a href="/messages/drafts/" class="message-side-btn">Drafts</a>
+            </div>
+        </div>
+
+        <div class="col-md-6 offset-md-1">
+            <div class="message-panel">
+                <h3 class="text-center mb-4">New Message</h3>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">To</label>
+                        <select name="recipient" class="form-control" required>
+                            <option value="">Select user</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">
+                                    {% if user.first_name or user.last_name %}
+                                        {{ user.first_name }} {{ user.last_name }}
+                                    {% else %}
+                                        {{ user.username }}
+                                    {% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Subject</label>
+                        <input type="text" name="subject" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Message</label>
+                        <textarea name="body" class="form-control" rows="8" required></textarea>
+                    </div>
+
+                    <button type="submit" name="action" value="send" class="btn btn-dark">Send</button>
+                    <button type="submit" name="action" value="draft" class="btn btn-outline-secondary">Save Draft</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

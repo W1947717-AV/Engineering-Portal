@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="section-title">Dashboard</div>
+
+<div class="container pb-5">
+
+    <div class="dashboard-welcome mb-4">
+        <h2>
+            Welcome back,
+            {% if request.user.first_name %}
+                {{ request.user.first_name }}
+            {% else %}
+                {{ request.user.username }}
+            {% endif %}
+        </h2>
+        <p>Your engineering activity overview.</p>
+    </div>
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h3>My Teams</h3>
+
+                {% for membership in my_memberships %}
+                    <div class="dashboard-list-item">
+                        <strong>{{ membership.team.name }}</strong>
+                        <br>
+                        <span>
+                            {{ membership.role|default:"Team Member" }}
+                            {% if membership.team.department %}
+                                · {{ membership.team.department.name }}
+                            {% endif %}
+                        </span>
+                    </div>
+                {% empty %}
+                    <p>No team memberships yet.</p>
+                {% endfor %}
+
+                <a href="/teams/" class="btn btn-outline-secondary mt-3">View Teams</a>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h3>Upcoming Meetings</h3>
+
+                {% for meeting in upcoming_meetings %}
+                    <div class="dashboard-list-item">
+                        <strong>{{ meeting.title }}</strong>
+                        <br>
+                        <span>{{ meeting.team.name }} · {{ meeting.date }} at {{ meeting.time }}</span>
+
+                        {% if meeting.status == 'pending' %}
+                            <span class="dashboard-badge badge-pending">Pending</span>
+                        {% elif meeting.status == 'accepted' %}
+                            <span class="dashboard-badge badge-accepted">Accepted</span>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <p>No upcoming meetings.</p>
+                {% endfor %}
+
+                <a href="/schedule/" class="btn btn-outline-secondary mt-3">View Schedule</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dashboard-card mb-4">
+        <h3>Pending Meeting Requests</h3>
+
+        {% for meeting in pending_requests %}
+            <div class="dashboard-request">
+                <div>
+                    <strong>{{ meeting.title }}</strong>
+                    <br>
+                    <span>
+                        From:
+                        {% if meeting.organiser.first_name or meeting.organiser.last_name %}
+                            {{ meeting.organiser.first_name }} {{ meeting.organiser.last_name }}
+                        {% else %}
+                            {{ meeting.organiser.username }}
+                        {% endif %}
+                        · Team: {{ meeting.team.name }}
+                        · {{ meeting.date }} at {{ meeting.time }}
+                    </span>
+                </div>
+
+                <div class="dashboard-request-actions">
+                    <form method="POST" action="/schedule/{{ meeting.id }}/accept/">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                    </form>
+
+                    <form method="POST" action="/schedule/{{ meeting.id }}/decline/">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                    </form>
+                </div>
+            </div>
+        {% empty %}
+            <p>No pending meeting requests.</p>
+        {% endfor %}
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h3>Recent Messages</h3>
+
+                {% for message in recent_messages %}
+                    <a href="/messages/{{ message.id }}/" class="dashboard-message">
+                        <strong>{{ message.subject }}</strong>
+                        {% if not message.is_read %}
+                            <span class="dashboard-badge badge-new">New</span>
+                        {% endif %}
+                        <br>
+                        <span>
+                            From:
+                            {% if message.sender.first_name or message.sender.last_name %}
+                                {{ message.sender.first_name }} {{ message.sender.last_name }}
+                            {% else %}
+                                {{ message.sender.username }}
+                            {% endif %}
+                        </span>
+                        <p>{{ message.body|truncatechars:80 }}</p>
+                    </a>
+                {% empty %}
+                    <p>No recent messages.</p>
+                {% endfor %}
+
+                <a href="/messages/" class="btn btn-outline-secondary mt-3">View Messages</a>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h3>Quick Actions</h3>
+
+                <div class="d-grid gap-3">
+                    <a href="/messages/new/" class="btn btn-dark">Send Message</a>
+                    <a href="/schedule/new/" class="btn btn-outline-secondary">Schedule Meeting</a>
+                    <a href="/teams/" class="btn btn-outline-secondary">Browse Teams</a>
+                    <a href="/teams/departments/" class="btn btn-outline-secondary">View Departments</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

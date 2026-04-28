@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="section-title">Departments</div>
+
+<div class="container pb-5">
+
+    <div class="org-structure-wrapper mb-5">
+        <div class="org-header">
+            <div>
+                <h1>☷ Organisation Structure</h1>
+                <p>Sky Engineering's organisation structure</p>
+            </div>
+        </div>
+
+        <div class="org-chart">
+            <div class="org-root-card">
+                <div class="org-root-icon">▦</div>
+                <h3>Sky Engineering</h3>
+                <p>Engineering Excellence</p>
+            </div>
+
+            <div class="org-lines"></div>
+
+            <div class="org-departments">
+                {% for department in departments %}
+                    <a href="/teams/departments/{{ department.id }}/" class="org-dept-card dept-{{ department.name|slugify }}">
+                        <div class="org-dept-icon">
+                            {% if department.name == "Engineering" %}
+                                &lt;/&gt;
+                            {% elif department.name == "Design" %}
+                                ✎
+                            {% elif department.name == "Product" %}
+                                ◇
+                            {% elif department.name == "Growth / Marketing" %}
+                                ◉
+                            {% else %}
+                                ▦
+                            {% endif %}
+                        </div>
+
+                        <h3>{{ department.name }}</h3>
+
+                        <p>
+                            {% if department.description %}
+                                {{ department.description|truncatechars:80 }}
+                            {% else %}
+                                View department teams and structure
+                            {% endif %}
+                        </p>
+
+                        <span class="org-view-link">View Teams →</span>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <div class="org-team-groups">
+                {% for department in departments %}
+                    <div class="org-team-group group-{{ department.name|slugify }}">
+                        {% for team in department.team_set.all|slice:":4" %}
+                            <div>♙ {{ team.name }}</div>
+                        {% empty %}
+                            <div>No teams added yet</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="department-list-header">
+        <div class="department-list-icon">▦</div>
+        <div>
+            <h2>Departments</h2>
+            <p>Explore and view all departments in detail.</p>
+        </div>
+    </div>
+
+    <form method="GET" action="/teams/departments/" class="mb-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <input type="text" name="q" class="form-control" placeholder="Search departments or teams..." value="{{ query }}">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-dark w-100">Search</button>
+            </div>
+            <div class="col-md-2">
+                <a href="/teams/departments/" class="btn btn-outline-secondary w-100">Reset</a>
+            </div>
+        </div>
+    </form>
+
+    <div class="department-list">
+        {% for department in departments %}
+            <div class="department-row department-row-{{ department.name|slugify }}">
+                <div class="department-row-icon">
+                    {% if department.name == "Engineering" %}
+                        &lt;/&gt;
+                    {% elif department.name == "Design" %}
+                        ✎
+                    {% elif department.name == "Product" %}
+                        ◇
+                    {% elif department.name == "Growth / Marketing" %}
+                        ◉
+                    {% else %}
+                        ▦
+                    {% endif %}
+                </div>
+
+                <div class="department-row-main">
+                    <h3>{{ department.name }}</h3>
+
+                    <p>
+                        {{ department.description|default:"No description added yet." }}
+                    </p>
+                </div>
+
+                <div class="department-row-count">
+                    ♙ {{ department.team_set.all|length }} Teams
+                </div>
+
+                <div class="department-row-action">
+                    <a href="/teams/departments/{{ department.id }}/">
+                        View Department →
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="text-center py-5">
+                <p>No departments found.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="org-footer-note">
+        ⓘ Click on any department above or in the list to view its teams and details.
+    </div>
+
+</div>
+
+{% endblock %}

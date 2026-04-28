@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="section-title">Schedule</div>
+
+<div class="container pb-5">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="schedule-sidebar">
+                <a href="/schedule/new/" class="schedule-side-btn active">Schedule Meeting</a>
+                <a href="/schedule/" class="schedule-side-btn">Upcoming</a>
+                <a href="/teams/" class="schedule-side-btn">Teams</a>
+            </div>
+        </div>
+
+        <div class="col-md-7 offset-md-1">
+            <div class="schedule-panel">
+                <h3 class="text-center mb-4">Schedule Meeting</h3>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Meeting Title</label>
+                        <input type="text" name="title" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Team</label>
+                        <select name="team" class="form-control" required>
+                            <option value="">Select team</option>
+                            {% for team in teams %}
+                                <option value="{{ team.id }}"
+                                    {% if selected_team_id == team.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ team.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Send request to</label>
+                        <select name="recipient" class="form-control" required>
+                            <option value="">Select user</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">
+                                    {% if user.first_name or user.last_name %}
+                                        {{ user.first_name }} {{ user.last_name }}
+                                    {% else %}
+                                        {{ user.username }}
+                                    {% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Date</label>
+                        <input type="date" name="date" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Time</label>
+                        <input type="time" name="time" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Platform / Location</label>
+                        <input type="text" name="location" class="form-control" placeholder="e.g. Microsoft Teams, Zoom, Meeting Room 3">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Message / Notes</label>
+                        <textarea name="notes" class="form-control" rows="5"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark">Send Meeting Request</button>
+                    <a href="/schedule/" class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="section-title">Team Details</div>
+
+<div class="container pb-5">
+    <div class="card shadow-sm p-3 p-md-4" style="border-radius: 10px;">
+        <div class="row">
+
+            <div class="col-md-3 text-center mb-4 mb-md-0">
+                <img  
+                    src="{% static 'teams/team_logos/' %}{{ team.logo }}.png"  
+                    alt="{{ team.name }} logo"  
+                    style="width:140px; height:140px; object-fit:contain; background:#f1f1f1; margin:0 auto 30px auto; border-radius:10px; padding:12px; display:block;"
+                >
+
+                <div class="d-grid gap-3 px-2">
+                    <a href="/messages/" class="btn btn-outline-secondary">Email Team</a>
+                    <a href="/schedule/new/?team={{ team.id }}" class="btn btn-outline-secondary">Schedule Meeting</a>
+                    <a href="#" class="btn btn-outline-secondary">Org Chart</a>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <h2 style="font-weight:700; margin-bottom: 10px;">{{ team.name }}</h2>
+
+                <div class="mb-3" style="line-height:1.5;">
+                    <div><strong>Department:</strong> {{ team.department|default:"Not added yet" }}</div>
+                    <p>
+                        <strong>Description:</strong>
+                        {{ team.description|default:"No description added yet." }}
+                    </p>
+                    <div><strong>Team Leader:</strong> {{ team.get_team_leader_name }}</div>
+
+                    <div>
+                        <strong>Workstream:</strong>
+                        {% if team.workstream %}
+                            <span class="badge bg-dark">
+                                {{ team.workstream }}
+                            </span>
+                        {% else %}
+                            Not added yet
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5 style="font-weight:500; margin-bottom:12px;">Team Members</h5>
+
+                    {% if team.members.all %}
+                        <div class="row g-2">
+                            {% for member in team.members.all %}
+                                <div class="col-md-4">
+                                    <div class="member-card">
+                                        <div class="member-name">
+                                            {{ member.get_full_name }}
+                                        </div>
+
+                                        {% if member.role %}
+                                            <div class="member-role">
+                                                {{ member.role }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div>No members added yet.</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <h5 style="font-weight:500; margin-bottom:8px;">Key Skills &amp; Technologies</h5>
+
+                    {% if team.skills %}
+                        <div>{{ team.skills|linebreaksbr }}</div>
+                    {% else %}
+                        <div>No skills listed.</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <h5 style="font-weight:500; margin-bottom:8px;">Downstream Dependencies</h5>
+
+                    {% for dep in team.downstream_dependencies.all %}
+                        <a href="/teams/{{ dep.id }}/" class="dependency-pill">
+                            {{ dep.name }}
+                        </a>
+                    {% empty %}
+                        <span class="text-muted">None</span>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-4">
+                    <h5 style="font-weight:500; margin-bottom:8px;">Upstream Dependencies</h5>
+
+                    {% for dep in team.upstream_dependencies.all %}
+                        <a href="/teams/{{ dep.id }}/" class="dependency-pill">
+                            {{ dep.name }}
+                        </a>
+                    {% empty %}
+                        <span class="text-muted">None</span>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
