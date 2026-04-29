@@ -1808,6 +1808,263 @@
                 width: 100%;
             }
         }
+
+
+        .schedule-title-bar {
+            background: linear-gradient(90deg, #f3e8ff, #eaf2ff);
+        }
+
+        .schedule-page {
+            background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
+        }
+
+        /* Sidebar */
+        .schedule-sidebar-modern {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e6e6e6;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+
+        .schedule-side-modern {
+            display: block;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #111;
+            border: 1px solid #e6e6e6;
+            font-weight: 600;
+        }
+
+        .schedule-side-modern:hover {
+            background: #f6f0ff;
+            color: #6f42c1;
+        }
+
+        .schedule-side-modern.active {
+            background: #f3e8ff;
+            border-left: 4px solid #6f42c1;
+            color: #6f42c1;
+        }
+
+        .schedule-side-modern.primary {
+            background: linear-gradient(90deg, #6f42c1, #8b5cf6);
+            color: white;
+            border: none;
+        }
+
+        /* Panel */
+        .schedule-panel-modern {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #e6e6e6;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+
+        .schedule-panel-heading {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .schedule-icon {
+            width: 48px;
+            height: 48px;
+            background: #eee5ff;
+            color: #6f42c1;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        /* Card */
+        .schedule-card-modern {
+            border: 1px solid #e6e6e6;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 18px;
+            background: white;
+            transition: 0.2s;
+        }
+
+        .schedule-card-modern:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        /* Header */
+        .schedule-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .schedule-badges {
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge-status {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-status.accepted {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .badge-status.pending {
+            background: #fff3cd;
+            color: #664d03;
+        }
+
+        .badge-status.declined {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .badge-type {
+            background: #eee;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+        }
+
+        /* Banner */
+        .schedule-banner {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-weight: 600;
+        }
+
+        .schedule-banner.accepted {
+            background: #d1e7dd;
+        }
+
+        .schedule-banner.pending {
+            background: #fff3cd;
+        }
+
+        /* Grid */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .schedule-grid div {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .schedule-grid strong {
+            display: block;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        .schedule-grid span {
+            font-weight: 600;
+        }
+
+        .schedule-meta {
+            margin-top: 12px;
+        }
+
+        .schedule-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .btn-accept {
+            background: #198754;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .btn-decline {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .btn-delete {
+            border: 1px solid #dc3545;
+            color: #dc3545;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .modern-nav {
+            padding: 20px 20px 32px;
+        }
+
+        .modern-dashboard {
+            border: none;
+            background: #f3e8ff;
+            color: #111;
+            border-radius: 10px;
+            padding: 10px 22px;
+            box-shadow: 0 4px 12px rgba(111, 66, 193, 0.12);
+            text-decoration: none;
+        }
+
+        .modern-nav-links {
+            margin-top: 22px;
+            gap: 32px;
+        }
+
+        .modern-nav-pill {
+            border: none;
+            background: transparent;
+            min-width: auto;
+            padding: 8px 12px;
+            font-weight: 700;
+        }
+
+        .modern-nav-pill:hover {
+            background: #f8f5ff;
+            border-radius: 10px;
+        }
+
+        .teams-nav {
+            color: #0d6efd;
+        }
+
+        .departments-nav {
+            color: #198754;
+        }
+
+        .messages-nav {
+            color: #f59f00;
+        }
+
+        .schedule-nav {
+            color: #e83e8c;
+        }
+
+        .nav-separator {
+            width: 8px;
+            height: 38px;
+            background: #e1e1e1;
+            border-radius: 999px;
+        }
             </style>
 </head>
 
@@ -1852,17 +2109,20 @@
             <div class="top-divider"></div>
         </div>
 
-        <div class="main-nav">
-            <a href="/dashboard/" class="dashboard-btn" style="text-decoration:none; color:#111;">Dashboard</a>
+        <div class="main-nav modern-nav">
+            <a href="/dashboard/" class="dashboard-btn modern-dashboard">▦ Dashboard</a>
 
-            <div class="nav-links">
-                <a href="/teams/" class="nav-pill">Teams</a>
+            <div class="nav-links modern-nav-links">
+                <a href="/teams/" class="nav-pill modern-nav-pill teams-nav">👥 Teams</a>
                 <div class="nav-separator"></div>
-                <a href="/teams/departments/" class="nav-pill">Departments</a>
+
+                <a href="/teams/departments/" class="nav-pill modern-nav-pill departments-nav">🏢 Departments</a>
                 <div class="nav-separator"></div>
-                <a href="/messages/" class="nav-pill">Messages</a>
+
+                <a href="/messages/" class="nav-pill modern-nav-pill messages-nav">💬 Messages</a>
                 <div class="nav-separator"></div>
-                <a href="/schedule/" class="nav-pill">Schedule</a>
+
+                <a href="/schedule/" class="nav-pill modern-nav-pill schedule-nav">📅 Schedule</a>
             </div>
         </div>
 
