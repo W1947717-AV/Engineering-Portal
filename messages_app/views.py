@@ -11,7 +11,7 @@ def get_user_display_name(user):
     return full_name if full_name else user.username
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/login/')
 def new_message(request):
     users = User.objects.exclude(id=request.user.id).order_by('first_name', 'last_name', 'username')
 
@@ -41,7 +41,7 @@ def new_message(request):
     })
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/login/')
 def inbox(request):
     query = request.GET.get('q', '')
     sort = request.GET.get('sort', 'newest')
@@ -72,7 +72,7 @@ def inbox(request):
     })
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/login/')
 def sent_messages(request):
     query = request.GET.get('q', '')
     sort = request.GET.get('sort', 'newest')
@@ -103,7 +103,7 @@ def sent_messages(request):
     })
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/login/')
 def drafts(request):
     messages = Message.objects.filter(
         sender=request.user,
@@ -115,7 +115,7 @@ def drafts(request):
     })
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/login/')
 def view_message(request, id):
     message = get_object_or_404(Message, id=id)
 
