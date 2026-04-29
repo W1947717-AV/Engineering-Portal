@@ -2,27 +2,34 @@
 
 {% block content %}
 
-<div class="section-title">Dashboard</div>
+<div class="section-title dashboard-title-bar">Dashboard</div>
 
-<div class="container pb-5">
+<div class="container pb-5 dashboard-page">
 
-    <div class="dashboard-welcome mb-4">
-        <h2>
-            Welcome back,
-            {% if request.user.first_name %}
-                {{ request.user.first_name }}
-            {% else %}
-                {{ request.user.username }}
-            {% endif %}
-        </h2>
-        <p>Your engineering activity overview.</p>
+    <div class="dashboard-welcome dashboard-hero mb-4">
+        <div class="dashboard-hero-icon">👋</div>
+
+        <div>
+            <h2>
+                Welcome back,
+                {% if request.user.first_name %}
+                    {{ request.user.first_name }}
+                {% else %}
+                    {{ request.user.username }}
+                {% endif %}
+            </h2>
+            <p>Your engineering activity overview.</p>
+        </div>
     </div>
 
     <div class="row g-4 mb-4">
 
         <div class="col-md-6">
-            <div class="dashboard-card">
-                <h3>My Teams</h3>
+            <div class="dashboard-card dashboard-card-blue">
+                <div class="dashboard-card-heading">
+                    <span class="dashboard-icon blue-icon">👥</span>
+                    <h3>My Teams</h3>
+                </div>
 
                 {% for membership in my_memberships %}
                     <div class="dashboard-list-item">
@@ -39,13 +46,16 @@
                     <p>No team memberships yet.</p>
                 {% endfor %}
 
-                <a href="/teams/" class="btn btn-outline-secondary mt-3">View Teams</a>
+                <a href="/teams/" class="btn dashboard-outline-blue mt-3">View Teams</a>
             </div>
         </div>
 
         <div class="col-md-6">
-            <div class="dashboard-card">
-                <h3>Upcoming Meetings</h3>
+            <div class="dashboard-card dashboard-card-pink">
+                <div class="dashboard-card-heading">
+                    <span class="dashboard-icon pink-icon">📅</span>
+                    <h3>Upcoming Meetings</h3>
+                </div>
 
                 {% for meeting in upcoming_meetings %}
                     <div class="dashboard-list-item">
@@ -63,14 +73,17 @@
                     <p>No upcoming meetings.</p>
                 {% endfor %}
 
-                <a href="/schedule/" class="btn btn-outline-secondary mt-3">View Schedule</a>
+                <a href="/schedule/" class="btn dashboard-outline-pink mt-3">View Schedule</a>
             </div>
         </div>
 
     </div>
 
-    <div class="dashboard-card mb-4">
-        <h3>Pending Meeting Requests</h3>
+    <div class="dashboard-card dashboard-card-yellow mb-4">
+        <div class="dashboard-card-heading">
+            <span class="dashboard-icon yellow-icon">🔔</span>
+            <h3>Pending Meeting Requests</h3>
+        </div>
 
         {% for meeting in pending_requests %}
             <div class="dashboard-request">
@@ -97,7 +110,7 @@
 
                     <form method="POST" action="/schedule/{{ meeting.id }}/decline/">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Decline</button>
                     </form>
                 </div>
             </div>
@@ -109,8 +122,11 @@
     <div class="row g-4">
 
         <div class="col-md-6">
-            <div class="dashboard-card">
-                <h3>Recent Messages</h3>
+            <div class="dashboard-card dashboard-card-purple">
+                <div class="dashboard-card-heading">
+                    <span class="dashboard-icon purple-icon">💬</span>
+                    <h3>Recent Messages</h3>
+                </div>
 
                 {% for message in recent_messages %}
                     <a href="/messages/{{ message.id }}/" class="dashboard-message">
@@ -133,19 +149,22 @@
                     <p>No recent messages.</p>
                 {% endfor %}
 
-                <a href="/messages/" class="btn btn-outline-secondary mt-3">View Messages</a>
+                <a href="/messages/" class="btn dashboard-outline-purple mt-3">View Messages</a>
             </div>
         </div>
 
         <div class="col-md-6">
-            <div class="dashboard-card">
-                <h3>Quick Actions</h3>
+            <div class="dashboard-card dashboard-card-green">
+                <div class="dashboard-card-heading">
+                    <span class="dashboard-icon green-icon">⚡</span>
+                    <h3>Quick Actions</h3>
+                </div>
 
                 <div class="d-grid gap-3">
-                    <a href="/messages/new/" class="btn btn-dark">Send Message</a>
-                    <a href="/schedule/new/" class="btn btn-outline-secondary">Schedule Meeting</a>
-                    <a href="/teams/" class="btn btn-outline-secondary">Browse Teams</a>
-                    <a href="/teams/departments/" class="btn btn-outline-secondary">View Departments</a>
+                    <a href="/messages/new/" class="btn dashboard-gradient-btn">✈ Send Message</a>
+                    <a href="/schedule/new/" class="btn dashboard-outline-pink">📅 Schedule Meeting</a>
+                    <a href="/teams/" class="btn dashboard-outline-blue">👥 Browse Teams</a>
+                    <a href="/teams/departments/" class="btn dashboard-outline-green">🏢 View Departments</a>
                 </div>
             </div>
         </div>
