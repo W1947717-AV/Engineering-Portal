@@ -1,5 +1,8 @@
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
+from django.contrib.admin.models import LogEntry
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from .models import Team, Department
 
 
@@ -181,3 +184,26 @@ def department_detail(request, id):
         'department': department,
         'teams': teams,
     })
+
+
+@login_required(login_url='/login/')
+def audit_trail(request):
+    """
+    Displays a log of all recorded changes to teams and departments.
+    Restricted to admin/staff users only. Non-staff users get a 403 error.
+
+    Uses Django's built-in LogEntry model which records every
+    create, update, and delete action performed via the admin panel.
+    Ordered by most recent first, limited to the last 100 entries.
+    """
+    # Explicitly block non-superuser users with a 403 Forbidden response
+    if not request.user.is_superuser:
+        raise PermissionDenied
+
+    logs = (
+        LogEntry.objects
+        .select_related('user', 'content_type')
+        .order_by('-action_time')[:100]
+    )
+
+    return render(request, 'teams/audit_trail.html', {'logs': logs})

@@ -103,3 +103,66 @@ def register(request):
         return redirect('/dashboard/')
 
     return render(request, 'register.html')
+
+@login_required(login_url='/login/')
+def profile_update(request):
+    """
+    Allows the logged-in user to update their profile information.
+
+    GET: Renders the profile form pre-filled with current details.
+    POST: Updates first name, last name, and email, then redirects
+          back to the profile page with a success message.
+    """
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+
+        user = request.user
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.save()
+
+        messages.success(request, 'Profile updated successfully.')
+        return redirect('/profile/')
+
+    return render(request, 'profile.html')
+
+
+@login_required(login_url='/login/')
+def change_password(request):
+    """
+    Allows the logged-in user to change their password.
+
+    GET: Renders the change password form.
+    POST: Validates the current password, checks new passwords match,
+          then updates and re-authenticates the user so they stay
+          logged in after the change.
+    """
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        # Verify the current password is correct
+        if not request.user.check_password(current_password):
+            messages.error(request, 'Current password is incorrect.')
+            return redirect('/change-password/')
+
+        if new_password != confirm_password:
+            messages.error(request, 'New passwords do not match.')
+            return redirect('/change-password/')
+
+        # Set new password — this hashes it securely
+        request.user.set_password(new_password)
+        request.user.save()
+
+        # Re-authenticate so the session stays valid after password change
+        from django.contrib.auth import update_session_auth_hash
+        update_session_auth_hash(request, request.user)
+
+        messages.success(request, 'Password changed successfully.')
+        return redirect('/profile/')
+
+    return render(request, 'change_password.html')

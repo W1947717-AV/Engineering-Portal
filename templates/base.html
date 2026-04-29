@@ -2072,10 +2072,12 @@
     <div class="page-wrapper">
         <div class="top-header">
             <div class="header-row">
-                <div class="profile-section">
-                    <div class="profile-icon">👤</div>
-                    <div>Profile</div>
-                </div>
+                <a href="/profile/" style="text-decoration:none; color:inherit;">
+                    <div class="profile-section">
+                        <div class="profile-icon">👤</div>
+                        <div>{{ request.user.first_name|default:request.user.username }}</div>
+                    </div>
+                </a>
 
                 <div class="portal-center">
                     {% load static %}
@@ -2123,6 +2125,11 @@
                 <div class="nav-separator"></div>
 
                 <a href="/schedule/" class="nav-pill modern-nav-pill schedule-nav">📅 Schedule</a>
+
+                {% if request.user.is_superuser %}
+                    <div class="nav-separator"></div>
+                    <a href="/teams/audit/" class="nav-pill modern-nav-pill" style="color:#dc3545;">🕵 Audit Trail</a>
+                {% endif %}
             </div>
         </div>
 

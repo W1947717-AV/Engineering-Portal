@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="section-title">Audit Trail</div>
+
+<div class="container pb-5">
+    <p style="color:#666; margin-bottom:20px;">
+        Showing the last 100 changes made to teams and departments.
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date & Time</th>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Object</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.action_time|date:"d M Y H:i" }}</td>
+                    <td>
+                        {% if log.user.get_full_name %}
+                            {{ log.user.get_full_name }}
+                        {% else %}
+                            {{ log.user.username }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if log.is_addition %}
+                            <span class="badge bg-success">Added</span>
+                        {% elif log.is_change %}
+                            <span class="badge bg-warning text-dark">Changed</span>
+                        {% elif log.is_deletion %}
+                            <span class="badge bg-danger">Deleted</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ log.object_repr }}</td>
+                    <td>{{ log.content_type }}</td>
+                </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No changes recorded yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

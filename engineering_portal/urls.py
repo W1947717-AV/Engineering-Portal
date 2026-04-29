@@ -22,4 +22,8 @@ urlpatterns = [
     path('teams/', include('teams.urls')),
     path('messages/', include('messages_app.urls')),
     path('schedule/', include('schedule_app.urls')),
+
+    # Shortcut URLs so /profile/ and /change-password/ work from anywhere
+    path('profile/', dashboard_views.profile_update, name='profile'),
+    path('change-password/', dashboard_views.change_password, name='change_password'),
 ]
