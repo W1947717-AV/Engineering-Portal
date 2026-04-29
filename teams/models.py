@@ -42,6 +42,12 @@ class Team(models.Model):
         help_text="GitHub/GitLab URLs, one per line"
     )
 
+    # Slack/Teams channels or email addresses for contacting the team
+    contact_channels = models.TextField(
+        blank=True,
+        help_text="Slack channels, Teams channels or email addresses, one per line"
+    )
+
     logo = models.CharField(max_length=100, blank=True)
 
     downstream_dependencies = models.ManyToManyField(
