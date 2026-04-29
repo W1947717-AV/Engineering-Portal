@@ -4,12 +4,23 @@ from .models import Team, Department
 
 
 def team_home(request):
+    """
+    Displays the main teams directory page.
+
+    Supports filtering by department, team leader, and workstream,
+    as well as free-text search across team name, skills, members, etc.
+    Results can be sorted alphabetically A-Z or Z-A.
+
+    GET params: q (search), department (id), team_leader (id),
+                workstream (str), sort (az|za)
+    """
     query = request.GET.get('q', '')
     department_id = request.GET.get('department', '')
     team_leader_id = request.GET.get('team_leader', '')
     selected_workstream = request.GET.get('workstream', '')
     sort = request.GET.get('sort', '')
 
+    # Use select_related and prefetch_related to avoid N+1 queries
     teams = (
         Team.objects
         .select_related('department', 'team_leader')
@@ -24,6 +35,7 @@ def team_home(request):
 
     departments = Department.objects.all()
 
+    # Build a deduplicated list of team leaders for the filter dropdown
     leader_teams = (
         Team.objects
         .exclude(team_leader__isnull=True)
@@ -40,6 +52,7 @@ def team_home(request):
             team_leaders.append(user)
             seen_ids.add(user.id)
 
+    # Get distinct non-empty workstreams for the filter dropdown
     workstreams = (
         Team.objects
         .exclude(workstream__isnull=True)
@@ -49,6 +62,7 @@ def team_home(request):
         .order_by('workstream')
     )
 
+    # Free-text search across multiple fields using Q objects (OR logic)
     if query:
         teams = teams.filter(
             Q(name__icontains=query) |
@@ -63,6 +77,7 @@ def team_home(request):
             Q(members__user__username__icontains=query)
         ).distinct()
 
+    # Apply dropdown filters
     if department_id:
         teams = teams.filter(department_id=department_id)
 
@@ -72,6 +87,7 @@ def team_home(request):
     if selected_workstream:
         teams = teams.filter(workstream=selected_workstream)
 
+    # Apply sorting
     if sort == 'az':
         teams = teams.order_by('name')
     elif sort == 'za':
@@ -93,6 +109,13 @@ def team_home(request):
 
 
 def team_detail(request, id):
+    """
+    Displays the detail page for a single team.
+
+    Fetches the team by primary key, including its department,
+    leader, members, and both upstream and downstream dependencies.
+    Returns 404 if the team does not exist.
+    """
     team = get_object_or_404(
         Team.objects
         .select_related('department', 'team_leader')
@@ -108,6 +131,13 @@ def team_detail(request, id):
 
 
 def departments_home(request):
+    """
+    Displays all departments with their associated teams.
+
+    Supports free-text search across department name, team name,
+    and workstream. Uses prefetch_related to load teams and members
+    efficiently in a single query set.
+    """
     query = request.GET.get('q', '')
 
     departments = Department.objects.prefetch_related(
@@ -129,8 +159,16 @@ def departments_home(request):
 
 
 def department_detail(request, id):
+    """
+    Displays the detail page for a single department.
+
+    Lists all teams belonging to this department, ordered alphabetically,
+    with their leaders, members, and downstream dependencies prefetched.
+    Returns 404 if the department does not exist.
+    """
     department = get_object_or_404(Department, id=id)
 
+    # Fetch teams in this department, ordered by name
     teams = (
         Team.objects
         .filter(department=department)
