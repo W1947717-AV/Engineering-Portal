@@ -34,6 +34,14 @@ class Team(models.Model):
     workstream = models.CharField(max_length=100, blank=True)
     skills = models.TextField(blank=True)
 
+    skills = models.TextField(blank=True)
+
+    # Links to the team's code repositories
+    code_repositories = models.TextField(
+        blank=True,
+        help_text="GitHub/GitLab URLs, one per line"
+    )
+
     logo = models.CharField(max_length=100, blank=True)
 
     downstream_dependencies = models.ManyToManyField(

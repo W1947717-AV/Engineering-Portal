@@ -83,6 +83,23 @@
                 </div>
 
                 <div class="mb-4">
+                    <h5 style="font-weight:500; margin-bottom:8px;">Code Repositories</h5>
+                    {% if team.code_repositories %}
+                        {% for repo in team.code_repositories.splitlines %}
+                            {% if repo.strip %}
+                                <div style="margin-bottom:6px;">
+                                    <a href="{{ repo.strip }}" target="_blank" rel="noopener noreferrer">
+                                        {{ repo.strip }}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div>No repositories listed.</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
                     <h5 style="font-weight:500; margin-bottom:8px;">Downstream Dependencies</h5>
 
                     {% for dep in team.downstream_dependencies.all %}
