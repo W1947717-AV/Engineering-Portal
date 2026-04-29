@@ -1360,6 +1360,254 @@
                 width: 100%;
             }
         }
+
+        .messages-title-bar {
+            background: linear-gradient(90deg, #f3e8ff, #eaf2ff);
+            font-weight: 700;
+        }
+
+        .messages-page {
+            background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
+        }
+
+        .messages-sidebar-modern {
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 16px;
+            padding: 22px;
+            min-height: 520px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+
+        .messages-side-modern {
+            display: block;
+            text-decoration: none;
+            color: #111;
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .messages-side-modern:hover {
+            background: #f6f0ff;
+            color: #6f42c1;
+        }
+
+        .messages-side-modern.active {
+            background: #f3e8ff;
+            color: #6f42c1;
+            border-left: 5px solid #6f42c1;
+        }
+
+        .messages-side-modern.primary {
+            background: linear-gradient(90deg, #6f42c1, #8b5cf6);
+            color: white;
+            border: none;
+        }
+
+        .messages-side-modern.primary:hover {
+            color: white;
+            opacity: 0.92;
+        }
+
+        .messages-panel-modern {
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+
+        .messages-panel-heading {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .messages-panel-heading h2 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .messages-icon {
+            width: 48px;
+            height: 48px;
+            background: #eee5ff;
+            color: #6f42c1;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .messages-filter-modern {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 20px;
+            align-items: end;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 24px;
+        }
+
+        .messages-filter-modern label {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .messages-filter-modern .form-control,
+        .messages-panel-modern .form-control {
+            border-radius: 10px;
+            border: 1px solid #d8dce3;
+            padding: 11px 14px;
+        }
+
+        .messages-filter-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 10px;
+        }
+
+        .messages-apply-btn {
+            background: linear-gradient(90deg, #6f42c1, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            padding: 9px 18px;
+        }
+
+        .messages-apply-btn:hover {
+            color: white;
+            opacity: 0.92;
+        }
+
+        .messages-reset-btn,
+        .messages-draft-btn {
+            background: white;
+            color: #6c757d;
+            border: 1px solid #adb5bd;
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 9px 18px;
+        }
+
+        .messages-reset-btn:hover,
+        .messages-draft-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .messages-send-btn {
+            background: linear-gradient(90deg, #6f42c1, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            padding: 10px 18px;
+        }
+
+        .messages-send-btn:hover {
+            color: white;
+            opacity: 0.92;
+        }
+
+        .message-card-modern {
+            display: grid;
+            grid-template-columns: 64px 1fr;
+            gap: 18px;
+            text-decoration: none;
+            color: #111;
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 16px;
+            transition: 0.2s ease;
+        }
+
+        .message-card-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+            color: #111;
+        }
+
+        .message-avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: #eee5ff;
+            color: #6f42c1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .sent-avatar {
+            background: #e7f0ff;
+            color: #0d6efd;
+        }
+
+        .draft-avatar {
+            background: #fff3cd;
+            color: #b58100;
+        }
+
+        .message-top-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .message-meta {
+            margin: 0 0 6px 0;
+            color: #666;
+            font-size: 0.92rem;
+        }
+
+        .message-preview {
+            margin: 0;
+            color: #333;
+        }
+
+        .message-new-badge {
+            background: #0d6efd;
+            color: white;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .message-draft-badge {
+            background: #fff3cd;
+            color: #664d03;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 900px) {
+            .messages-filter-modern {
+                grid-template-columns: 1fr;
+            }
+
+            .message-card-modern {
+                grid-template-columns: 1fr;
+            }
+
+            .message-avatar {
+                margin-bottom: 8px;
+            }
+        }
             </style>
 </head>
 

@@ -2,22 +2,26 @@
 
 {% block content %}
 
-<div class="section-title">Messages</div>
+<div class="section-title messages-title-bar">💬 Messages</div>
 
-<div class="container pb-5">
-    <div class="row">
-        <div class="col-md-2">
-            <div class="message-sidebar">
-                <a href="/messages/new/" class="message-side-btn active">New Message</a>
-                <a href="/messages/inbox/" class="message-side-btn">Inbox</a>
-                <a href="/messages/sent/" class="message-side-btn">Sent</a>
-                <a href="/messages/drafts/" class="message-side-btn">Drafts</a>
+<div class="container pb-5 messages-page">
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="messages-sidebar-modern">
+                <a href="/messages/new/" class="messages-side-modern primary active">✎ New Message</a>
+                <a href="/messages/" class="messages-side-modern">📥 Inbox</a>
+                <a href="/messages/sent/" class="messages-side-modern">✈ Sent</a>
+                <a href="/messages/drafts/" class="messages-side-modern">📄 Drafts</a>
             </div>
         </div>
 
-        <div class="col-md-6 offset-md-1">
-            <div class="message-panel">
-                <h3 class="text-center mb-4">New Message</h3>
+        <div class="col-md-9">
+            <div class="messages-panel-modern">
+                <div class="messages-panel-heading">
+                    <span class="messages-icon">✎</span>
+                    <h2>New Message</h2>
+                </div>
 
                 <form method="POST">
                     {% csrf_token %}
@@ -48,11 +52,12 @@
                         <textarea name="body" class="form-control" rows="8" required></textarea>
                     </div>
 
-                    <button type="submit" name="action" value="send" class="btn btn-dark">Send</button>
-                    <button type="submit" name="action" value="draft" class="btn btn-outline-secondary">Save Draft</button>
+                    <button type="submit" name="send" class="btn messages-send-btn">Send Message</button>
+                    <button type="submit" name="draft" class="btn messages-draft-btn">Save Draft</button>
                 </form>
             </div>
         </div>
+
     </div>
 </div>
 

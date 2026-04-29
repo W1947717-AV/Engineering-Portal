@@ -2,57 +2,55 @@
 
 {% block content %}
 
-<div class="section-title">Messages</div>
+<div class="section-title messages-title-bar">💬 Messages</div>
 
-<div class="container pb-5">
-    <div class="row">
-        <div class="col-md-2">
-            <div class="message-sidebar">
-                <a href="/messages/new/" class="message-side-btn">New Message</a>
-                <a href="/messages/inbox/" class="message-side-btn">Inbox</a>
-                <a href="/messages/sent/" class="message-side-btn active">Sent</a>
-                <a href="/messages/drafts/" class="message-side-btn">Drafts</a>
+<div class="container pb-5 messages-page">
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="messages-sidebar-modern">
+                <a href="/messages/new/" class="messages-side-modern primary">✎ New Message</a>
+                <a href="/messages/" class="messages-side-modern">📥 Inbox</a>
+                <a href="/messages/sent/" class="messages-side-modern active">✈ Sent</a>
+                <a href="/messages/drafts/" class="messages-side-modern">📄 Drafts</a>
             </div>
         </div>
 
-        <div class="col-md-7 offset-md-1">
-            <div class="message-panel">
-                <h3 class="text-center mb-4">Sent Messages</h3>
-
-                <form method="GET" class="mb-3">
-                    <label>Search:</label>
-                    <input type="text" name="q" class="form-control mb-2" value="{{ query }}">
-
-                    <label>Sort by:</label>
-                    <select name="sort" class="form-control mb-2">
-                        <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest to Oldest</option>
-                        <option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>Oldest to Newest</option>
-                    </select>
-
-                    <button class="btn btn-dark btn-sm">Apply</button>
-                    <a href="/messages/sent/" class="btn btn-outline-secondary btn-sm">Reset</a>
-                </form>
+        <div class="col-md-9">
+            <div class="messages-panel-modern">
+                <div class="messages-panel-heading">
+                    <span class="messages-icon">✈</span>
+                    <h2>Sent</h2>
+                </div>
 
                 {% for message in messages %}
-                    <a href="/messages/{{ message.id }}/" class="message-card">
-                        <strong>{{ message.subject }}</strong><br>
-                        <small>
-                            To:
-                            {% if message.recipient.first_name or message.recipient.last_name %}
-                                {{ message.recipient.first_name }} {{ message.recipient.last_name }}
-                            {% else %}
-                                {{ message.recipient.username }}
-                            {% endif %}
-                            |
-                            {{ message.created_at }}
-                        </small>
-                        <p>{{ message.body|truncatechars:80 }}</p>
+                    <a href="/messages/{{ message.id }}/" class="message-card-modern">
+                        <div class="message-avatar sent-avatar">✈</div>
+
+                        <div class="message-content-modern">
+                            <div class="message-top-line">
+                                <strong>{{ message.subject }}</strong>
+                            </div>
+
+                            <p class="message-meta">
+                                To:
+                                {% if message.recipient.first_name or message.recipient.last_name %}
+                                    {{ message.recipient.first_name }} {{ message.recipient.last_name }}
+                                {% else %}
+                                    {{ message.recipient.username }}
+                                {% endif %}
+                                · {{ message.created_at }}
+                            </p>
+
+                            <p class="message-preview">{{ message.body|truncatechars:100 }}</p>
+                        </div>
                     </a>
                 {% empty %}
-                    <p>No sent messages found.</p>
+                    <p class="text-center">No sent messages.</p>
                 {% endfor %}
             </div>
         </div>
+
     </div>
 </div>
 

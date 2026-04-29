@@ -2,61 +2,85 @@
 
 {% block content %}
 
-<div class="section-title">Messages</div>
+<div class="section-title messages-title-bar">💬 Messages</div>
 
-<div class="container pb-5">
-    <div class="row">
-        <div class="col-md-2">
-            <div class="message-sidebar">
-                <a href="/messages/new/" class="message-side-btn">New Message</a>
-                <a href="/messages/inbox/" class="message-side-btn active">Inbox</a>
-                <a href="/messages/sent/" class="message-side-btn">Sent</a>
-                <a href="/messages/drafts/" class="message-side-btn">Drafts</a>
+<div class="container pb-5 messages-page">
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="messages-sidebar-modern">
+                <a href="/messages/new/" class="messages-side-modern primary">✎ New Message</a>
+                <a href="/messages/" class="messages-side-modern active">📥 Inbox</a>
+                <a href="/messages/sent/" class="messages-side-modern">✈ Sent</a>
+                <a href="/messages/drafts/" class="messages-side-modern">📄 Drafts</a>
             </div>
         </div>
 
-        <div class="col-md-7 offset-md-1">
-            <div class="message-panel">
-                <h3 class="text-center mb-4">Inbox</h3>
+        <div class="col-md-9">
+            <div class="messages-panel-modern">
+                <div class="messages-panel-heading">
+                    <span class="messages-icon">📥</span>
+                    <h2>Inbox</h2>
+                </div>
 
-                <form method="GET" class="mb-3">
-                    <label>Search:</label>
-                    <input type="text" name="q" class="form-control mb-2" value="{{ query }}">
+                <form method="GET" class="messages-filter-modern mb-4">
+                    <div>
+                        <label>Search</label>
+                        <input type="text" name="q" class="form-control" placeholder="Search messages..." value="{{ query }}">
+                    </div>
 
-                    <label>Sort by:</label>
-                    <select name="sort" class="form-control mb-2">
-                        <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest to Oldest</option>
-                        <option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>Oldest to Newest</option>
-                    </select>
+                    <div>
+                        <label>Sort by</label>
+                        <select name="sort" class="form-control">
+                            <option value="newest" {% if selected_sort == "newest" %}selected{% endif %}>Newest to Oldest</option>
+                            <option value="oldest" {% if selected_sort == "oldest" %}selected{% endif %}>Oldest to Newest</option>
+                        </select>
+                    </div>
 
-                    <button class="btn btn-dark btn-sm">Apply</button>
-                    <a href="/messages/inbox/" class="btn btn-outline-secondary btn-sm">Reset</a>
+                    <div class="messages-filter-actions">
+                        <button class="btn messages-apply-btn">Filter</button>
+                        <a href="/messages/" class="btn messages-reset-btn">Reset</a>
+                    </div>
                 </form>
 
                 {% for message in messages %}
-                    <a href="/messages/{{ message.id }}/" class="message-card">
-                        <strong>{{ message.subject }}</strong>
-                        {% if not message.is_read %}
-                            <span class="badge bg-primary">New</span>
-                        {% endif %}
-                        <br>
-                        <small>
-                            From:
-                            {% if message.sender.first_name or message.sender.last_name %}
-                                {{ message.sender.first_name }} {{ message.sender.last_name }}
+                    <a href="/messages/{{ message.id }}/" class="message-card-modern">
+                        <div class="message-avatar">
+                            {% if message.sender.first_name %}
+                                {{ message.sender.first_name|first }}{{ message.sender.last_name|first }}
                             {% else %}
-                                {{ message.sender.username }}
+                                {{ message.sender.username|first }}
                             {% endif %}
-                            |
-                            {{ message.created_at }}
-                        </small>
-                        <p>{{ message.body|truncatechars:80 }}</p>
+                        </div>
+
+                        <div class="message-content-modern">
+                            <div class="message-top-line">
+                                <strong>{{ message.subject }}</strong>
+
+                                {% if not message.is_read %}
+                                    <span class="message-new-badge">New</span>
+                                {% endif %}
+                            </div>
+
+                            <p class="message-meta">
+                                From:
+                                {% if message.sender.first_name or message.sender.last_name %}
+                                    {{ message.sender.first_name }} {{ message.sender.last_name }}
+                                {% else %}
+                                    {{ message.sender.username }}
+                                {% endif %}
+                                · {{ message.created_at }}
+                            </p>
+
+                            <p class="message-preview">{{ message.body|truncatechars:100 }}</p>
+                        </div>
                     </a>
                 {% empty %}
-                    <p>No messages found.</p>
+                    <p class="text-center">No messages found.</p>
                 {% endfor %}
             </div>
         </div>
+
     </div>
 </div>
 

@@ -2,43 +2,56 @@
 
 {% block content %}
 
-<div class="section-title">Messages</div>
+<div class="section-title messages-title-bar">💬 Messages</div>
 
-<div class="container pb-5">
-    <div class="row">
-        <div class="col-md-2">
-            <div class="message-sidebar">
-                <a href="/messages/new/" class="message-side-btn">New Message</a>
-                <a href="/messages/inbox/" class="message-side-btn">Inbox</a>
-                <a href="/messages/sent/" class="message-side-btn">Sent</a>
-                <a href="/messages/drafts/" class="message-side-btn active">Drafts</a>
+<div class="container pb-5 messages-page">
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="messages-sidebar-modern">
+                <a href="/messages/new/" class="messages-side-modern primary">✎ New Message</a>
+                <a href="/messages/" class="messages-side-modern">📥 Inbox</a>
+                <a href="/messages/sent/" class="messages-side-modern">✈ Sent</a>
+                <a href="/messages/drafts/" class="messages-side-modern active">📄 Drafts</a>
             </div>
         </div>
 
-        <div class="col-md-7 offset-md-1">
-            <div class="message-panel">
-                <h3 class="text-center mb-4">Drafts</h3>
+        <div class="col-md-9">
+            <div class="messages-panel-modern">
+                <div class="messages-panel-heading">
+                    <span class="messages-icon">📄</span>
+                    <h2>Drafts</h2>
+                </div>
 
                 {% for message in messages %}
-                    <a href="/messages/{{ message.id }}/" class="message-card">
-                        <strong>{{ message.subject }}</strong><br>
-                        <small>
-                            To:
-                            {% if message.recipient.first_name or message.recipient.last_name %}
-                                {{ message.recipient.first_name }} {{ message.recipient.last_name }}
-                            {% else %}
-                                {{ message.recipient.username }}
-                            {% endif %}
-                            |
-                            {{ message.created_at }}
-                        </small>
-                        <p>{{ message.body|truncatechars:80 }}</p>
+                    <a href="/messages/{{ message.id }}/" class="message-card-modern">
+                        <div class="message-avatar draft-avatar">D</div>
+
+                        <div class="message-content-modern">
+                            <div class="message-top-line">
+                                <strong>{{ message.subject }}</strong>
+                                <span class="message-draft-badge">Draft</span>
+                            </div>
+
+                            <p class="message-meta">
+                                To:
+                                {% if message.recipient.first_name or message.recipient.last_name %}
+                                    {{ message.recipient.first_name }} {{ message.recipient.last_name }}
+                                {% else %}
+                                    {{ message.recipient.username }}
+                                {% endif %}
+                                · {{ message.created_at }}
+                            </p>
+
+                            <p class="message-preview">{{ message.body|truncatechars:100 }}</p>
+                        </div>
                     </a>
                 {% empty %}
-                    <p>No drafts found.</p>
+                    <p class="text-center">No drafts saved.</p>
                 {% endfor %}
             </div>
         </div>
+
     </div>
 </div>
 
