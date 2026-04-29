@@ -7,7 +7,7 @@ from teams.models import Team
 from .models import Meeting
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/login/')
 def schedule_home(request):
     meetings = (
         Meeting.objects
@@ -24,10 +24,14 @@ def schedule_home(request):
     })
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/login/')
 def create_meeting(request):
     teams = Team.objects.all().order_by('name')
-    users = User.objects.exclude(id=request.user.id).order_by('first_name', 'last_name', 'username')
+    users = User.objects.exclude(id=request.user.id).order_by(
+        'first_name',
+        'last_name',
+        'username'
+    )
 
     selected_team_id = request.GET.get('team', '')
 
@@ -39,6 +43,7 @@ def create_meeting(request):
         time = request.POST.get('time')
         location = request.POST.get('location')
         notes = request.POST.get('notes')
+        recurrence = request.POST.get('recurrence', 'none')
 
         team = get_object_or_404(Team, id=team_id)
         recipient = get_object_or_404(User, id=recipient_id)
@@ -52,6 +57,7 @@ def create_meeting(request):
             time=time,
             location=location,
             notes=notes,
+            recurrence=recurrence,
             status='pending'
         )
 
@@ -64,7 +70,7 @@ def create_meeting(request):
     })
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/login/')
 def accept_meeting(request, id):
     meeting = get_object_or_404(Meeting, id=id, recipient=request.user)
 
@@ -75,7 +81,7 @@ def accept_meeting(request, id):
     return redirect('/schedule/')
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/login/')
 def decline_meeting(request, id):
     meeting = get_object_or_404(Meeting, id=id, recipient=request.user)
 
@@ -86,7 +92,7 @@ def decline_meeting(request, id):
     return redirect('/schedule/')
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/login/')
 def delete_meeting(request, id):
     meeting = get_object_or_404(Meeting, id=id)
 

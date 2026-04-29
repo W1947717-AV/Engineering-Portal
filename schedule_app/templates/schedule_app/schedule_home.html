@@ -24,18 +24,28 @@
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <h5 class="mb-0">{{ meeting.title }}</h5>
 
-                            {% if meeting.status == 'pending' %}
-                                <span class="schedule-badge schedule-badge-pending">Pending</span>
-                            {% elif meeting.status == 'accepted' %}
-                                <span class="schedule-badge schedule-badge-accepted">Accepted</span>
-                            {% elif meeting.status == 'declined' %}
-                                <span class="schedule-badge schedule-badge-declined">Declined</span>
-                            {% endif %}
+                            <div>
+                                {% if meeting.status == 'pending' %}
+                                    <span class="schedule-badge schedule-badge-pending">Pending</span>
+                                {% elif meeting.status == 'accepted' %}
+                                    <span class="schedule-badge schedule-badge-accepted">Accepted</span>
+                                {% elif meeting.status == 'declined' %}
+                                    <span class="schedule-badge schedule-badge-declined">Declined</span>
+                                {% endif %}
+
+                                {% if meeting.recurrence == 'weekly' %}
+                                    <span class="schedule-badge recurrence-badge">Weekly</span>
+                                {% elif meeting.recurrence == 'monthly' %}
+                                    <span class="schedule-badge recurrence-badge">Monthly</span>
+                                {% else %}
+                                    <span class="schedule-badge recurrence-badge">One Time</span>
+                                {% endif %}
+                            </div>
                         </div>
 
                         {% if meeting.organiser == request.user %}
                             <p class="schedule-status pending">
-                                You organised this meeting. 
+                                You organised this meeting.
                                 {% if meeting.status == 'pending' %}
                                     Waiting for response from requested user.
                                 {% elif meeting.status == 'accepted' %}
@@ -70,6 +80,11 @@
                             <div>
                                 <strong>Time</strong>
                                 <span>{{ meeting.time }}</span>
+                            </div>
+
+                            <div>
+                                <strong>Repeat</strong>
+                                <span>{{ meeting.get_recurrence_display }}</span>
                             </div>
 
                             <div>

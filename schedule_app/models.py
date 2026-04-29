@@ -10,8 +10,19 @@ class Meeting(models.Model):
         ('declined', 'Declined'),
     ]
 
+    RECURRENCE_CHOICES = [
+        ('none', 'One Time'),
+        ('weekly', 'Weekly'),
+        ('monthly', 'Monthly'),
+    ]
+
     title = models.CharField(max_length=150)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='meetings')
+
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE,
+        related_name='meetings'
+    )
 
     organiser = models.ForeignKey(
         User,
@@ -30,7 +41,17 @@ class Meeting(models.Model):
     location = models.CharField(max_length=150, blank=True)
     notes = models.TextField(blank=True)
 
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+
+    recurrence = models.CharField(
+        max_length=10,
+        choices=RECURRENCE_CHOICES,
+        default='none'
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
