@@ -1,3 +1,4 @@
+# Authors: Akhash Vivekanantha (W1947717), Safwan Choudhury
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from teams.models import Team, Department

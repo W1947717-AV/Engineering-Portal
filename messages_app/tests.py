@@ -1,3 +1,4 @@
+# Authors: Akhash Vivekanantha (W1947717), Gopishan Murukadasan
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from .models import Message

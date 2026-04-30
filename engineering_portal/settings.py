@@ -1,3 +1,5 @@
+# Authors: Akhash Vivekanantha (W1947717), Hassan Tariq,
+#          Gopishan Murukadasan, Safwan Choudhury
 """
 Django settings for engineering_portal project.
 

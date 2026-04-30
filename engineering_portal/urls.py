@@ -1,3 +1,5 @@
+# Authors: Akhash Vivekanantha (W1947717), Hassan Tariq,
+#          Gopishan Murukadasan, Safwan Choudhury
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect

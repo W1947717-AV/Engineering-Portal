@@ -1,3 +1,4 @@
+# Author: Akhash Vivekanantha (W1947717) , Hassan Tariq
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.contrib.admin.models import LogEntry
